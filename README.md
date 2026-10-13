@@ -1,4 +1,6 @@
-# Welcome to your Bilt project
+# Hafen Doctor - Find your way to a doctor in Hamburg, even if German isn’t your language.
+
+## Welcome to your Bilt project
 
 [![Built with Bilt](https://img.shields.io/endpoint?url=https%3A%2F%2Fapp.bilt.me%2Fapi%2Fbadge)](https://bilt.me)
 
