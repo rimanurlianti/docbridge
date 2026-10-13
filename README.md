@@ -1,4 +1,5 @@
-# Hafen Doctor - Find your way to a doctor in Hamburg, even if German isn’t your language.
+# Hafen Doctor
+Find your way to a doctor in Hamburg, even if German isn’t your language.
 
 ## Welcome to your Bilt project
 
