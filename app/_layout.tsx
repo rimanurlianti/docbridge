@@ -13,7 +13,8 @@ import Constants, { ExecutionEnvironment } from 'expo-constants';
 import { Platform } from 'react-native';
 import { useEffect } from 'react';
 import * as DevClient from 'expo-dev-client';
-import { HeroUINativeProvider } from 'heroui-native';
+import { HeroUINativeProvider, useThemeColor } from 'heroui-native';
+import { CareProvider } from '@/lib/care-context';
 import { Uniwind } from 'uniwind';
 import {
   ErrorBoundary as ExpoErrorBoundary,
@@ -43,6 +44,27 @@ function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
 }
 
 export { ErrorBoundary };
+
+function AppStack() {
+  const [background, foreground] = useThemeColor(['background', 'foreground']);
+  return (
+    <Stack
+      screenOptions={{
+        headerStyle: { backgroundColor: background },
+        headerTintColor: foreground,
+        headerShadowVisible: false,
+        headerTitleStyle: { fontFamily: 'Inter_600SemiBold' },
+        contentStyle: { backgroundColor: background },
+      }}
+    >
+      <Stack.Screen name="(tabs)" options={{ title: 'Navigate', headerShown: false }} />
+      <Stack.Screen name="care" options={{ title: 'Care route' }} />
+      <Stack.Screen name="practice/[id]" options={{ title: 'Practice details' }} />
+      <Stack.Screen name="prepare" options={{ title: 'Booking support' }} />
+      <Stack.Screen name="help" options={{ title: 'Medical help' }} />
+    </Stack>
+  );
+}
 
 // Before any screen renders an Image or loads a font.
 patchExpoGoAssetUrls();
@@ -145,9 +167,9 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <HeroUINativeProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ title: 'Habits', headerShown: false }} />
-        </Stack>
+        <CareProvider>
+          <AppStack />
+        </CareProvider>
         <InstallPrompt />
       </HeroUINativeProvider>
     </GestureHandlerRootView>

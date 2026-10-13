@@ -1,11 +1,10 @@
-import { Home } from 'lucide-react-native';
+import { Compass, Search, Bookmark } from 'lucide-react-native';
 import { Tabs } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar, type StatusBarStyle } from 'expo-status-bar';
 import { useThemeColor } from 'heroui-native';
-import { useUniwind } from 'uniwind';
-
+import * as Haptics from 'expo-haptics';
+const statusBarStyle: StatusBarStyle = 'dark';
 export default function TabLayout() {
-  const { theme } = useUniwind();
   const [background, foreground, border, accent, muted] = useThemeColor([
     'background',
     'foreground',
@@ -13,30 +12,57 @@ export default function TabLayout() {
     'accent',
     'muted',
   ]);
-
   return (
     <>
-      <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+      <StatusBar style={statusBarStyle} />
       <Tabs
+        screenListeners={({ navigation, route }) => ({
+          tabPress: () => {
+            if (navigation.getState().routes[navigation.getState().index]?.key !== route.key)
+              void Haptics.selectionAsync();
+          },
+        })}
         screenOptions={{
-          headerStyle: { backgroundColor: background },
-          headerTintColor: foreground,
-          headerTitleStyle: { color: foreground },
-          headerShadowVisible: false,
+          headerShown: false,
           sceneStyle: { backgroundColor: background },
           tabBarStyle: {
             backgroundColor: background,
             borderTopColor: border,
+            elevation: 0,
+            shadowOpacity: 0,
+            height: 78,
+            paddingBottom: 16,
+            paddingTop: 9,
           },
           tabBarActiveTintColor: accent,
           tabBarInactiveTintColor: muted,
+          tabBarLabelStyle: { fontFamily: 'Inter_500Medium', fontSize: 12 },
+          headerTintColor: foreground,
         }}
       >
         <Tabs.Screen
           name="index"
           options={{
-            title: 'Home',
-            tabBarIcon: ({ color, size }) => <Home color={color} size={size ?? 24} />,
+            title: 'Navigate',
+            tabBarIcon: ({ color, size }) => (
+              <Compass color={color} size={size} strokeWidth={1.8} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="find"
+          options={{
+            title: 'Find care',
+            tabBarIcon: ({ color, size }) => <Search color={color} size={size} strokeWidth={1.8} />,
+          }}
+        />
+        <Tabs.Screen
+          name="plan"
+          options={{
+            title: 'My plan',
+            tabBarIcon: ({ color, size }) => (
+              <Bookmark color={color} size={size} strokeWidth={1.8} />
+            ),
           }}
         />
       </Tabs>
